@@ -6,7 +6,7 @@
 
     <!-- KPI Cards Row -->
     <div class="row mb-4">
-        <!-- ... your KPI cards here ... -->
+        <!-- Add KPI cards here if needed -->
     </div>
 
     <!-- Filters Row -->
@@ -91,10 +91,10 @@
     new Chart(document.getElementById('salesByCityChart'), {
         type: 'bar',
         data: {
-            labels: {{ Js::from($salesByCity->pluck('name')) }},
+            labels: {!! json_encode($salesByCity->pluck('name')) !!},
             datasets: [{
                 label: 'Total Sales',
-                data: {{ Js::from($salesByCity->pluck('total_sales')) }},
+                data: {!! json_encode($salesByCity->pluck('total_sales')) !!},
                 backgroundColor: 'rgba(54, 162, 235, 0.7)'
             }]
         }
@@ -104,9 +104,9 @@
     new Chart(document.getElementById('topProductsChart'), {
         type: 'pie',
         data: {
-            labels: {{ Js::from($topProducts->pluck('name')) }},
+            labels: {!! json_encode($topProducts->pluck('name')) !!},
             datasets: [{
-                data: {{ Js::from($topProducts->pluck('total_sales')) }},
+                data: {!! json_encode($topProducts->pluck('total_sales')) !!},
                 backgroundColor: ['#FF6384','#36A2EB','#FFCE56']
             }]
         }
@@ -116,10 +116,10 @@
     new Chart(document.getElementById('officeSupportChart'), {
         type: 'bar',
         data: {
-            labels: {{ Js::from($officeSupport->pluck('name')) }},
+            labels: {!! json_encode($officeSupport->pluck('name')) !!},
             datasets: [{
                 label: 'Total Sales',
-                data: {{ Js::from($officeSupport->pluck('total_sales')) }},
+                data: {!! json_encode($officeSupport->pluck('total_sales')) !!},
                 backgroundColor: 'rgba(75, 192, 192, 0.7)'
             }]
         },
@@ -132,13 +132,30 @@
     new Chart(document.getElementById('salesTrendChart'), {
         type: 'line',
         data: {
-            labels: {{ Js::from($salesTrend->pluck('month')) }},
+            labels: {!! json_encode($salesTrend->pluck('month')) !!},
             datasets: [{
                 label: 'Total Sales',
-                data: {{ Js::from($salesTrend->pluck('total_sales')) }},
+                data: {!! json_encode($salesTrend->pluck('total_sales')) !!},
                 borderColor: 'rgba(255, 99, 132, 0.7)',
-                fill: false
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                tension: 0.3,
+                fill: true
             }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: true }
+            },
+            scales: {
+                x: {
+                    title: { display: true, text: 'Month' }
+                },
+                y: {
+                    title: { display: true, text: 'Total Sales' },
+                    beginAtZero: true
+                }
+            }
         }
     });
 
@@ -146,9 +163,9 @@
     new Chart(document.getElementById('topCustomersChart'), {
         type: 'doughnut',
         data: {
-            labels: {{ Js::from($topCustomers->pluck('name')) }},
+            labels: {!! json_encode($topCustomers->pluck('name')) !!},
             datasets: [{
-                data: {{ Js::from($topCustomers->pluck('total_sales')) }},
+                data: {!! json_encode($topCustomers->pluck('total_sales')) !!},
                 backgroundColor: ['#FF6384','#36A2EB','#FFCE56','#4BC0C0','#9966FF']
             }]
         }

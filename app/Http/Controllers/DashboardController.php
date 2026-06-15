@@ -88,11 +88,14 @@ class DashboardController extends Controller
             ->get();
 
         // 4. Sales Trend Over Time
-        $salesTrend = (clone $salesQuery)
-            ->selectRaw('DATE_FORMAT(sale_date, "%Y-%m") as month, SUM(amount) as total_sales')
+        $salesTrend = Sale::selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month, SUM(amount) as total_sales')
+            ->when($request->startDate && $request->endDate, function ($query) use ($request) {
+                $query->whereBetween('created_at', [$request->startDate, $request->endDate]);
+            })
             ->groupBy('month')
             ->orderBy('month')
             ->get();
+
 
         // 5. Top Customer Contribution
         $topCustomers = (clone $salesQuery)
